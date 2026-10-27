@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>メモ</title>
+</head>
+<body>
+  <h1>メモ</h1>
+
+  <form th:action="@{/memo}" th:object="${form}" method="post">
+    <input type="text" th:field="*{text}">
+    <button type="submit">追加</button>
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+  </form>
+
+  <ul>
+    <li th:each="m : ${memos}">
+      <span th:text="${m.text}"></span>
+      <form th:action="@{/memo/{id}/delete(id=${m.id})}" method="post" style="display:inline">
+        <button type="submit">削除</button>
+      </form>
+    </li>
+  </ul>
+</body>
+</html>
