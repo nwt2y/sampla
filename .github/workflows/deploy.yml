@@ -23,6 +23,7 @@ jobs:
           cache: maven
 
       - name: Build
+        working-directory: sampla
         run: mvn -B clean package -DskipTests
 
       - uses: aws-actions/configure-aws-credentials@v4
@@ -37,7 +38,7 @@ jobs:
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           BUCKET="elasticbeanstalk-${AWS_REGION}-${ACCOUNT_ID}"
           VERSION="${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}"
-          JAR=$(ls target/*.jar | grep -v original | head -n 1)
+          JAR=$(ls sampla/target/*.jar | grep -v original | head -n 1)
 
           aws s3 cp "$JAR" "s3://${BUCKET}/deploy/${VERSION}.jar"
 
